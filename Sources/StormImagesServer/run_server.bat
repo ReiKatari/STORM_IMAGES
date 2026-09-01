@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 chcp 65001 >nul
 title STORM IMAGES 0.0.3 - AI Backend Server
 echo ============================================================
@@ -10,7 +10,7 @@ cd /d "%~dp0"
 
 :: Kill any stale process listening on port 7860 to prevent WinError 10048
 for /f "tokens=5" %%a in ('netstat -aon ^| findstr :7860 ^| findstr LISTENING') do (
-    echo [*] Releasing port 7860 (terminating stale process PID %%a)...
+    echo [*] Releasing port 7860 on PID %%a...
     taskkill /F /PID %%a >nul 2>nul
 )
 
@@ -22,22 +22,22 @@ if "%UV_EXE%"=="" where uv.exe >nul 2>nul && set "UV_EXE=uv"
 
 if not "%UV_EXE%"=="" (
     echo [*] Launching AI Server via uv environment...
-    "%UV_EXE%" run --with fastapi,uvicorn,httpx,pillow,pydantic,diffusers,torch app.py
-    if %errorLevel% equ 0 goto :done
+    "%UV_EXE%" run --with fastapi,uvicorn,httpx,pillow,pydantic,diffusers,torch python -m uvicorn app:app --host 127.0.0.1 --port 7860
+    if %errorlevel% equ 0 goto :done
 )
 
 :: Fallback to python / py
 echo [*] Checking python executable...
 where python.exe >nul 2>nul
-if %errorLevel% equ 0 (
-    python app.py
-    if %errorLevel% equ 0 goto :done
+if %errorlevel% equ 0 (
+    python -m uvicorn app:app --host 127.0.0.1 --port 7860
+    if %errorlevel% equ 0 goto :done
 )
 
 where py.exe >nul 2>nul
-if %errorLevel% equ 0 (
-    py -3 app.py
-    if %errorLevel% equ 0 goto :done
+if %errorlevel% equ 0 (
+    py -3 -m uvicorn app:app --host 127.0.0.1 --port 7860
+    if %errorlevel% equ 0 goto :done
 )
 
 echo [!] ERROR: Neither uv nor python could start app.py!

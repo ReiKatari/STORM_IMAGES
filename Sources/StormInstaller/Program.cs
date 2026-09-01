@@ -773,7 +773,7 @@ namespace StormUniversal.Installer
                     key.SetValue("Publisher", "STORM TEAM");
                     key.SetValue("DisplayIcon", File.Exists(targetIco) ? targetIco : targetExe);
                     key.SetValue("InstallLocation", targetDir);
-                    key.SetValue("UninstallString", $"cmd.exe /c rmdir /s /q \"{targetDir}\" & del \"%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\*STORM SYSTEM OPTIMIZER*.lnk\" & del \"%USERPROFILE%\\Desktop\\*STORM SYSTEM OPTIMIZER*.lnk\"");
+                    key.SetValue("UninstallString", $"cmd.exe /c rmdir /s /q \"{targetDir}\" & del \"%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\*STORM IMAGES*.lnk\" & del \"%USERPROFILE%\\Desktop\\*STORM IMAGES*.lnk\"");
                 }
             }
             catch { }
