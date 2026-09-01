@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="StormImages/StormImages.csproj" />
+  <Project Path="StormInstaller/StormInstaller.csproj" />
+  <Project Path="StormLauncher/StormLauncher.csproj" />
+</Solution>

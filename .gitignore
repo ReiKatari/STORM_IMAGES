@@ -1,0 +1,59 @@
+# Build outputs & Executables
+bin/
+obj/
+dist/
+build/
+out/
+target/
+Assembling/
+scratch/
+gar_data/
+*.exe
+*.dll
+*.obj
+*.zip
+*.7z
+*.rar
+*.tar.gz
+*.apk
+*.aab
+*.msi
+*.pfx
+*.cer
+
+# Keep tools in STORM SWITCH BOX if needed
+!tools/**/*.exe
+!tools/**/*.dll
+
+# Keep branding icons
+!Files/*.ico
+!Files/*.png
+!Files/*.svg
+
+# IDE & Environment
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+Thumbs.db
+Desktop.ini
+*.log
+*.tmp
+node_modules/
+
+
+# STORM SOFT Security & Large File Shield
+.env
+.env.*
+*credential*.json
+*secret*
+*.pfx
+*.cer
+*.key
+deepseek_key.txt
+google-credentials.json
+installer/Output/
+*.tmp*
+*.wal
+

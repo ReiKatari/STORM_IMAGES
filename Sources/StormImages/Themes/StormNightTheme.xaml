@@ -1,0 +1,64 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Colors - STORM NIGHT (Obsidian / Cyan) -->
+    <Color x:Key="StormAppBackgroundColor">#000000</Color>
+    <Color x:Key="StormNavSidebarColor">#07080D</Color>
+    <Color x:Key="StormCardBackgroundColor">#0E1017</Color>
+    <Color x:Key="StormCardHoverColor">#161924</Color>
+    <Color x:Key="StormCardBorderColor">#1F2438</Color>
+    <Color x:Key="StormGaugeTrackColor">#1E2333</Color>
+
+    <Color x:Key="StormAccentColor">#00C2E8</Color>
+    <Color x:Key="StormAccentSecondaryColor">#38BDF8</Color>
+    <Color x:Key="StormAccentHoverColor">#7DD3FC</Color>
+    <Color x:Key="StormAccentPressedColor">#0284C7</Color>
+    <Color x:Key="StormGlowColor">#3300C2E8</Color>
+
+    <Color x:Key="StormTextPrimaryColor">#FFFFFF</Color>
+    <Color x:Key="StormTextSecondaryColor">#F8FAFC</Color>
+    <Color x:Key="StormTextMutedColor">#E2E8F0</Color>
+
+    <Color x:Key="StormBadgeSafeBgColor">#064E3B</Color>
+    <Color x:Key="StormBadgeSafeTextColor">#34D399</Color>
+    <Color x:Key="StormBadgeRecommendedBgColor">#0C4A6E</Color>
+    <Color x:Key="StormBadgeRecommendedTextColor">#38BDF8</Color>
+    <Color x:Key="StormBadgeAdvancedBgColor">#78350F</Color>
+    <Color x:Key="StormBadgeAdvancedTextColor">#FBBF24</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource StormAppBackgroundColor}"/>
+    <SolidColorBrush x:Key="NavSidebarBrush" Color="{StaticResource StormNavSidebarColor}"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource StormCardBackgroundColor}"/>
+    <SolidColorBrush x:Key="CardHoverBrush" Color="{StaticResource StormCardHoverColor}"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="{StaticResource StormCardBorderColor}"/>
+    <SolidColorBrush x:Key="GaugeTrackBrush" Color="{StaticResource StormGaugeTrackColor}"/>
+
+    <SolidColorBrush x:Key="AccentPrimaryBrush" Color="{StaticResource StormAccentColor}"/>
+    <SolidColorBrush x:Key="AccentSecondaryBrush" Color="{StaticResource StormAccentSecondaryColor}"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource StormAccentHoverColor}"/>
+    <SolidColorBrush x:Key="AccentPressedBrush" Color="{StaticResource StormAccentPressedColor}"/>
+    <SolidColorBrush x:Key="AccentGlowBrush" Color="{StaticResource StormGlowColor}"/>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource StormTextPrimaryColor}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource StormTextSecondaryColor}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource StormTextMutedColor}"/>
+
+    <SolidColorBrush x:Key="BadgeSafeBgBrush" Color="{StaticResource StormBadgeSafeBgColor}"/>
+    <SolidColorBrush x:Key="BadgeSafeTextBrush" Color="{StaticResource StormBadgeSafeTextColor}"/>
+    <SolidColorBrush x:Key="BadgeRecommendedBgBrush" Color="{StaticResource StormBadgeRecommendedBgColor}"/>
+    <SolidColorBrush x:Key="BadgeRecommendedTextBrush" Color="{StaticResource StormBadgeRecommendedTextColor}"/>
+    <SolidColorBrush x:Key="BadgeAdvancedBgBrush" Color="{StaticResource StormBadgeAdvancedBgColor}"/>
+    <SolidColorBrush x:Key="BadgeAdvancedTextBrush" Color="{StaticResource StormBadgeAdvancedTextColor}"/>
+
+    <!-- Gradients -->
+    <LinearGradientBrush x:Key="StormHeroGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#00B4D8" Offset="0.0"/>
+        <GradientStop Color="#0284C7" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="StormCardGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#121520" Offset="0.0"/>
+        <GradientStop Color="#08090E" Offset="1.0"/>
+    </LinearGradientBrush>
+</ResourceDictionary>
