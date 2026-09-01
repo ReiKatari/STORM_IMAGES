@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -157,18 +157,34 @@ namespace StormImages.Services
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string scriptPath = Path.Combine(baseDir, "StormImagesServer", "run_server.bat");
-                if (!File.Exists(scriptPath))
+                string[] potentialPaths = new string[]
                 {
-                    scriptPath = Path.Combine(baseDir, "..", "..", "..", "..", "StormImagesServer", "run_server.bat");
+                    Path.Combine(baseDir, "StormImagesServer", "run_server.bat"),
+                    Path.Combine(baseDir, "Sources", "StormImagesServer", "run_server.bat"),
+                    Path.Combine(baseDir, "..", "StormImagesServer", "run_server.bat"),
+                    Path.Combine(baseDir, "..", "..", "..", "..", "Sources", "StormImagesServer", "run_server.bat"),
+                    Path.Combine(baseDir, "..", "..", "..", "..", "StormImagesServer", "run_server.bat"),
+                    @"E:\STORM IMAGES\Sources\StormImagesServer\run_server.bat",
+                    @"E:\STORM IMAGES\Assembling\StormImagesServer\run_server.bat"
+                };
+
+                string? foundScript = null;
+                foreach (var p in potentialPaths)
+                {
+                    if (File.Exists(p))
+                    {
+                        foundScript = Path.GetFullPath(p);
+                        break;
+                    }
                 }
 
-                if (File.Exists(scriptPath))
+                if (!string.IsNullOrEmpty(foundScript))
                 {
                     var psi = new ProcessStartInfo
                     {
-                        FileName = scriptPath,
-                        WorkingDirectory = Path.GetDirectoryName(scriptPath),
+                        FileName = "cmd.exe",
+                        Arguments = $"/c \"{foundScript}\"",
+                        WorkingDirectory = Path.GetDirectoryName(foundScript),
                         UseShellExecute = true,
                         CreateNoWindow = false
                     };

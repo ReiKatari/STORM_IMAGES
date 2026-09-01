@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -20,7 +20,7 @@ namespace StormImages.ViewModels
         private string _appTitle = "STORM IMAGES";
 
         [ObservableProperty]
-        private string _appVersion = "0.0.1";
+        private string _appVersion = "0.0.2";
 
         [ObservableProperty]
         private object? _currentView;

@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 STORM IMAGES - Neural Image Generation and Editing Backend Server
 Powered by Qwen-Image-Edit and ScottzillaSystems/qwen-image-edit-plus-nsfw-lora
@@ -27,7 +27,7 @@ logger = logging.getLogger("storm_images_server")
 app = FastAPI(
     title="STORM IMAGES API",
     description="Neural image generation and editing server for Qwen-Image-Edit and LoRA adapters",
-    version="0.0.1"
+    version="0.0.2"
 )
 
 app.add_middleware(
