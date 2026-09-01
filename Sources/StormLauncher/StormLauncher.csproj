@@ -7,13 +7,13 @@
     <ApplicationIcon>..\..\Files\AppIcon.ico</ApplicationIcon>
     <AssemblyName>StormLauncher</AssemblyName>
     <RootNamespace>StormLauncher</RootNamespace>
-    <Version>0.0.2</Version>
-    <AssemblyVersion>0.0.2.0</AssemblyVersion>
-    <FileVersion>0.0.2.0</FileVersion>
-    <AssemblyTitle>STORM IMAGES 0.0.2</AssemblyTitle>
-    <Product>STORM IMAGES 0.0.2</Product>
-    <Title>STORM IMAGES 0.0.2</Title>
-    <Description>STORM IMAGES 0.0.2 - Launcher</Description>
+    <Version>0.0.3</Version>
+    <AssemblyVersion>0.0.3.0</AssemblyVersion>
+    <FileVersion>0.0.3.0</FileVersion>
+    <AssemblyTitle>STORM IMAGES 0.0.3</AssemblyTitle>
+    <Product>STORM IMAGES 0.0.3</Product>
+    <Title>STORM IMAGES 0.0.3</Title>
+    <Description>STORM IMAGES 0.0.3 - Launcher</Description>
     <Company>STORM TEAM</Company>
     <Authors>STORM TEAM</Authors>
     <Copyright>Copyright © 2026 STORM TEAM</Copyright>

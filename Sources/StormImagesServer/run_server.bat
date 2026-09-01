@@ -1,12 +1,18 @@
 ﻿@echo off
 chcp 65001 >nul
-title STORM IMAGES 0.0.2 - AI Backend Server
+title STORM IMAGES 0.0.3 - AI Backend Server
 echo ============================================================
-echo   STORM IMAGES 0.0.2 - AI BACKEND SERVER (Qwen-Image-Edit)
+echo   STORM IMAGES 0.0.3 - AI BACKEND SERVER (Qwen-Image-Edit)
 echo ============================================================
 echo.
 
 cd /d "%~dp0"
+
+:: Kill any stale process listening on port 7860 to prevent WinError 10048
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :7860 ^| findstr LISTENING') do (
+    echo [*] Releasing port 7860 (terminating stale process PID %%a)...
+    taskkill /F /PID %%a >nul 2>nul
+)
 
 :: Check for uv package manager in PATH or default locations
 set "UV_EXE="

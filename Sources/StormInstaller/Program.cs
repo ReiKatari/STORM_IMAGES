@@ -23,7 +23,7 @@ namespace StormUniversal.Installer
         private PictureBox picHeaderLogo = null!;
         private Panel headerPanel = null!;
 
-        private const string AppVersion = "0.0.2";
+        private const string AppVersion = "0.0.3";
         private const string AppDisplayName = "STORM IMAGES";
         private const string AppFolderName = "STORM IMAGES";
         private const string ExeName = "StormImages.exe";

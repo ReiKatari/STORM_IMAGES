@@ -299,22 +299,10 @@ namespace StormImages.ViewModels
             try
             {
                 string b64 = "";
-                if (!string.IsNullOrEmpty(SourceImagePath) && File.Exists(SourceImagePath))
+                if (!IsTextToImageMode && !string.IsNullOrEmpty(SourceImagePath) && File.Exists(SourceImagePath))
                 {
                     byte[] bytes = File.ReadAllBytes(SourceImagePath);
                     b64 = Convert.ToBase64String(bytes);
-                }
-                else
-                {
-                    // In pure Text-to-Image mode without input image, create a neutral starter canvas
-                    using var ms = new MemoryStream();
-                    using var bmp = new System.Drawing.Bitmap(1024, 1024);
-                    using (var g = System.Drawing.Graphics.FromImage(bmp))
-                    {
-                        g.Clear(System.Drawing.Color.FromArgb(16, 16, 24));
-                    }
-                    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    b64 = Convert.ToBase64String(ms.ToArray());
                 }
 
                 var settings = SettingsService.Instance.Settings;
@@ -666,14 +654,82 @@ namespace StormImages.ViewModels
             }
         }
 
+        public bool IsRuSelected => SelectedLanguage == "ru";
+        public bool IsEnSelected => SelectedLanguage == "en";
+        public bool IsDeSelected => SelectedLanguage == "de";
+        public bool IsFrSelected => SelectedLanguage == "fr";
+        public bool IsZhSelected => SelectedLanguage == "zh";
+        public bool IsJaSelected => SelectedLanguage == "ja";
+
+        public bool IsMidnightSelected => SelectedTheme == ThemeType.StormMidnight;
+        public bool IsDarkSelected => SelectedTheme == ThemeType.StormDark;
+        public bool IsNightSelected => SelectedTheme == ThemeType.StormNight;
+        public bool IsDaySelected => SelectedTheme == ThemeType.StormDay;
+        public bool IsMatrixSelected => SelectedTheme == ThemeType.StormMatrix;
+        public bool IsCyberpunkSelected => SelectedTheme == ThemeType.StormCyberpunk;
+        public bool IsFantasySelected => SelectedTheme == ThemeType.StormFantasy;
+        public bool IsWarhammerSelected => SelectedTheme == ThemeType.StormWarhammer;
+
+        [RelayCommand]
+        public void SetLanguage(string lang)
+        {
+            if (!string.IsNullOrEmpty(lang))
+            {
+                SelectedLanguage = lang;
+                LocalizationManager.Instance.SetLanguage(lang);
+                var s = SettingsService.Instance.Settings;
+                s.Language = lang;
+                SettingsService.Instance.Save();
+                NotifyLanguageChanges();
+            }
+        }
+
+        private void NotifyLanguageChanges()
+        {
+            OnPropertyChanged(nameof(IsRuSelected));
+            OnPropertyChanged(nameof(IsEnSelected));
+            OnPropertyChanged(nameof(IsDeSelected));
+            OnPropertyChanged(nameof(IsFrSelected));
+            OnPropertyChanged(nameof(IsZhSelected));
+            OnPropertyChanged(nameof(IsJaSelected));
+        }
+
+        private void NotifyThemeChanges()
+        {
+            OnPropertyChanged(nameof(IsMidnightSelected));
+            OnPropertyChanged(nameof(IsDarkSelected));
+            OnPropertyChanged(nameof(IsNightSelected));
+            OnPropertyChanged(nameof(IsDaySelected));
+            OnPropertyChanged(nameof(IsMatrixSelected));
+            OnPropertyChanged(nameof(IsCyberpunkSelected));
+            OnPropertyChanged(nameof(IsFantasySelected));
+            OnPropertyChanged(nameof(IsWarhammerSelected));
+        }
+
+        [RelayCommand]
+        public void SelectTheme(string themeName)
+        {
+            if (Enum.TryParse<ThemeType>(themeName, true, out var theme))
+            {
+                SelectedTheme = theme;
+                ThemeManager.Instance.ApplyTheme(theme, Application.Current.MainWindow);
+                var s = SettingsService.Instance.Settings;
+                s.Theme = theme;
+                SettingsService.Instance.Save();
+                NotifyThemeChanges();
+            }
+        }
+
         partial void OnSelectedThemeChanged(ThemeType value)
         {
             ThemeManager.Instance.ApplyTheme(value, Application.Current.MainWindow);
+            NotifyThemeChanges();
         }
 
         partial void OnSelectedLanguageChanged(string value)
         {
             LocalizationManager.Instance.SetLanguage(value);
+            NotifyLanguageChanges();
         }
 
         [RelayCommand]

@@ -189,8 +189,9 @@
                         <TextBox Text="{Binding Prompt, UpdateSourceTrigger=PropertyChanged}"
                                  AcceptsReturn="True"
                                  TextWrapping="Wrap"
-                                 Height="70"
-                                 Padding="8"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Height="90"
+                                 Padding="10,8"
                                  Background="#0A0817"
                                  BorderBrush="{DynamicResource CardBorderBrush}"
                                  BorderThickness="1"
@@ -207,16 +208,18 @@
                             <Button Content="{Binding Loc[TagPortrait]}" Command="{Binding AddPromptTagCommand}" CommandParameter="studio portrait, sharp focus" Style="{DynamicResource QuickTagButton}"/>
                         </WrapPanel>
 
-                        <TextBlock Text="{Binding Loc[NegativePromptTitle]}" FontWeight="SemiBold" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,10,0,4"/>
+                        <TextBlock Text="{Binding Loc[NegativePromptTitle]}" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,12,0,6"/>
                         <TextBox Text="{Binding NegativePrompt, UpdateSourceTrigger=PropertyChanged}"
+                                 AcceptsReturn="True"
                                  TextWrapping="Wrap"
-                                 Height="44"
-                                 Padding="8"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Height="90"
+                                 Padding="10,8"
                                  Background="#0A0817"
                                  BorderBrush="{DynamicResource CardBorderBrush}"
                                  BorderThickness="1"
                                  Foreground="{DynamicResource TextPrimaryBrush}"
-                                 FontSize="11.5"/>
+                                 FontSize="12"/>
                     </StackPanel>
                 </Border>
 
