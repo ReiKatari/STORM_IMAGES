@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using StormImages.Themes;
@@ -10,6 +10,7 @@ namespace StormImages
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModels.MainViewModel();
             Loaded += MainWindow_Loaded;
         }
 

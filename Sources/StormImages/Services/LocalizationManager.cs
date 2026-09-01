@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -16,6 +16,7 @@ namespace StormImages.Services
 
         public string CurrentLanguage { get; private set; } = "ru";
 
+        [IndexerName("Item")]
         public string this[string key] => Get(key);
 
         private readonly Dictionary<string, Dictionary<string, string>> _translations = new()
