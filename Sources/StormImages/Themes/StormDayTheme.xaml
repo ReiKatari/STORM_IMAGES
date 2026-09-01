@@ -1,7 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Colors - STORM DAY (Clean Bright / Sky) -->
+    <!-- Colors -->
     <Color x:Key="StormAppBackgroundColor">#F1F5F9</Color>
     <Color x:Key="StormNavSidebarColor">#E2E8F0</Color>
     <Color x:Key="StormCardBackgroundColor">#FFFFFF</Color>
@@ -50,6 +50,15 @@
     <SolidColorBrush x:Key="BadgeRecommendedTextBrush" Color="{StaticResource StormBadgeRecommendedTextColor}"/>
     <SolidColorBrush x:Key="BadgeAdvancedBgBrush" Color="{StaticResource StormBadgeAdvancedBgColor}"/>
     <SolidColorBrush x:Key="BadgeAdvancedTextBrush" Color="{StaticResource StormBadgeAdvancedTextColor}"/>
+
+    <!-- Sidebar Group Navigation Brushes (Light Theme Perfect Contrast) -->
+    <SolidColorBrush x:Key="NavGroupHeaderBrush" Color="#E2E8F0"/>
+    <SolidColorBrush x:Key="NavGroupHoverBrush" Color="#D1D9E4"/>
+    <SolidColorBrush x:Key="NavGroupBorderBrush" Color="#CBD5E1"/>
+    <SolidColorBrush x:Key="NavGroupGuidelineBrush" Color="#CBD5E1"/>
+    <SolidColorBrush x:Key="NavGroupChevronBgBrush" Color="#200284C7"/>
+    <SolidColorBrush x:Key="NavGroupChevronStrokeBrush" Color="#0284C7"/>
+    <SolidColorBrush x:Key="NavGroupTextBrush" Color="#0F172A"/>
 
     <!-- Gradients -->
     <LinearGradientBrush x:Key="StormHeroGradient" StartPoint="0,0" EndPoint="1,1">

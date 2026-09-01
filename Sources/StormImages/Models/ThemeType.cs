@@ -3,7 +3,12 @@
     public enum ThemeType
     {
         StormMidnight = 0,
-        StormNight = 1,
-        StormDay = 2
+        StormDark = 1,
+        StormNight = 2,
+        StormDay = 3,
+        StormMatrix = 4,
+        StormCyberpunk = 5,
+        StormFantasy = 6,
+        StormWarhammer = 7
     }
 }

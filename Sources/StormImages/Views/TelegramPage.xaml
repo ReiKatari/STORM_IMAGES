@@ -17,85 +17,87 @@
         <!-- Header -->
         <Grid Grid.Row="0" Margin="0,0,0,16">
             <StackPanel Orientation="Horizontal">
-                <Path Data="{StaticResource GeoTelegram}" Fill="{DynamicResource AccentPrimaryBrush}" Width="20" Height="20" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="Интеграция с Telegram (Канал / Группа)" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                <Path Data="{StaticResource GeoSend}" Fill="{DynamicResource AccentPrimaryBrush}" Width="20" Height="20" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding Loc[TelegramTitle]}" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
             </StackPanel>
         </Grid>
 
-        <!-- Content Split: Settings + Instructions -->
+        <!-- Content Split -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="520"/>
-                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Configuration Card -->
+            <!-- Configuration Form -->
             <Border Grid.Column="0"
                     Background="{DynamicResource CardBackgroundBrush}"
                     BorderBrush="{DynamicResource CardBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="12"
                     Padding="20">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <!-- Bot Token Field -->
-                        <TextBlock Text="Токен Telegram-бота (Bot Token):" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding BotToken, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="10,8"
-                                 Background="#0A0817"
-                                 BorderBrush="{DynamicResource CardBorderBrush}"
-                                 BorderThickness="1"
-                                 FontSize="12"
-                                 Margin="0,0,0,16"/>
+                <StackPanel>
+                    <TextBlock Text="{Binding Loc[TgTokenLabel]}" FontWeight="SemiBold" FontSize="12.5" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                    <TextBox Text="{Binding BotToken, UpdateSourceTrigger=PropertyChanged}"
+                             Padding="10,8"
+                             Background="#0A0817"
+                             BorderBrush="{DynamicResource CardBorderBrush}"
+                             BorderThickness="1"
+                             FontSize="12"
+                             Margin="0,0,0,14"/>
 
-                        <!-- Chat ID Field -->
-                        <TextBlock Text="ID Чата / Канала (Chat ID или @username):" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding ChatId, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="10,8"
-                                 Background="#0A0817"
-                                 BorderBrush="{DynamicResource CardBorderBrush}"
-                                 BorderThickness="1"
-                                 FontSize="12"
-                                 Margin="0,0,0,16"/>
+                    <TextBlock Text="{Binding Loc[TgChatIdLabel]}" FontWeight="SemiBold" FontSize="12.5" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                    <TextBox Text="{Binding ChatId, UpdateSourceTrigger=PropertyChanged}"
+                             Padding="10,8"
+                             Background="#0A0817"
+                             BorderBrush="{DynamicResource CardBorderBrush}"
+                             BorderThickness="1"
+                             FontSize="12"
+                             Margin="0,0,0,14"/>
 
-                        <!-- Auto-send Option -->
-                        <CheckBox IsChecked="{Binding AutoSend}" Margin="0,0,0,16">
-                            <TextBlock Text="Автоматически публиковать каждую новую генерацию" FontSize="12.5" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                        </CheckBox>
+                    <!-- Auto-send CheckBox -->
+                    <CheckBox IsChecked="{Binding AutoSend}" Margin="0,0,0,14">
+                        <TextBlock Text="{Binding Loc[TgAutoSendCheck]}" FontSize="12.5" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    </CheckBox>
 
-                        <!-- Caption Template -->
-                        <TextBlock Text="Шаблон подписи к изображению:" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6"/>
-                        <TextBox Text="{Binding CaptionTemplate, UpdateSourceTrigger=PropertyChanged}"
-                                 AcceptsReturn="True"
-                                 TextWrapping="Wrap"
-                                 Height="80"
-                                 Padding="10,8"
-                                 Background="#0A0817"
-                                 BorderBrush="{DynamicResource CardBorderBrush}"
-                                 BorderThickness="1"
-                                 FontSize="11.5"
-                                 Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding Loc[TgCaptionLabel]}" FontWeight="SemiBold" FontSize="12.5" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6"/>
+                    <TextBox Text="{Binding CaptionTemplate, UpdateSourceTrigger=PropertyChanged}"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             Height="80"
+                             Padding="8"
+                             Background="#0A0817"
+                             BorderBrush="{DynamicResource CardBorderBrush}"
+                             BorderThickness="1"
+                             FontSize="12"
+                             Margin="0,0,0,6"/>
+                    <TextBlock Text="{Binding Loc[TgVariablesHint]}" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,16"/>
 
-                        <TextBlock Text="Доступные переменные: {prompt}, {seed}, {lora_scale}" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,20"/>
+                    <Grid>
+                        <Button Command="{Binding TestConnectionCommand}"
+                                IsEnabled="{Binding IsTesting, Converter={StaticResource InverseBoolConverter}}"
+                                Content="{Binding Loc[BtnTestConnection]}"
+                                Padding="16,8"
+                                FontSize="12"
+                                HorizontalAlignment="Left"
+                                Style="{DynamicResource StormSecondaryButton}"/>
 
-                        <!-- Action Buttons -->
-                        <Grid Margin="0,0,0,16">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Command="{Binding TestConnectionCommand}" Content="⚡ Проверить подключение" Margin="0,0,6,0" Padding="12,10" Background="{DynamicResource AccentGlowBrush}" BorderBrush="{DynamicResource AccentPrimaryBrush}"/>
-                            <Button Grid.Column="1" Command="{Binding SaveSettingsCommand}" Content="💾 Сохранить настройки" Margin="6,0,0,0" Padding="12,10"/>
-                        </Grid>
+                        <Button Command="{Binding SaveSettingsCommand}"
+                                Content="{Binding Loc[BtnSaveSettings]}"
+                                Padding="18,8"
+                                FontSize="12"
+                                HorizontalAlignment="Right"
+                                Style="{DynamicResource StormHeroButton}"/>
+                    </Grid>
 
-                        <!-- Live Status Banner -->
-                        <Border Background="#100C24" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="12"
-                                Visibility="{Binding TestStatus, Converter={StaticResource StringEmptyToVisibilityConverter}}">
-                            <TextBlock Text="{Binding TestStatus}" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource AccentPrimaryBrush}" TextWrapping="Wrap"/>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
+                    <TextBlock Text="{Binding TestStatus}"
+                               FontSize="11.5"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource AccentPrimaryBrush}"
+                               Margin="0,12,0,0"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
             </Border>
 
             <!-- Guide Card -->
@@ -104,43 +106,31 @@
                     BorderBrush="{DynamicResource CardBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="12"
-                    Padding="20">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                            <Path Data="{StaticResource GeoCheck}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="Инструкция по настройке Telegram" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    Padding="22">
+                <StackPanel>
+                    <TextBlock Text="{Binding Loc[TgInstructionsTitle]}" FontWeight="Bold" FontSize="14.5" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16"/>
+
+                    <Border Background="{DynamicResource CardHoverBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Loc[TgStep1Title]}" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="{Binding Loc[TgStep1Desc]}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap"/>
                         </StackPanel>
+                    </Border>
 
-                        <Border Background="#0A0817" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
-                            <StackPanel>
-                                <TextBlock Text="1. Создание бота" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Откройте @BotFather в Telegram, отправьте команду /newbot, укажите имя и получите секретный HTTP API токен (например: 123456789:ABCdefGhIJKlmno)." FontSize="11.5" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Border>
+                    <Border Background="{DynamicResource CardHoverBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Loc[TgStep2Title]}" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="{Binding Loc[TgStep2Desc]}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
 
-                        <Border Background="#0A0817" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
-                            <StackPanel>
-                                <TextBlock Text="2. Добавление в канал или группу" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Добавьте созданного бота в администраторы вашего канала или группы с правами 'Публикация сообщений' (Post Messages)." FontSize="11.5" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Background="#0A0817" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,0,0,12">
-                            <StackPanel>
-                                <TextBlock Text="3. Получение Chat ID" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Для публичного канала можно указать @имя_канала (например @my_art_gallery). Для приватных каналов и групп ID начинается с -100 (например -1001987654321)." FontSize="11.5" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Background="#0A0817" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="14">
-                            <StackPanel>
-                                <TextBlock Text="4. Проверка связи" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,0,4"/>
-                                <TextBlock Text="Нажмите кнопку 'Проверить подключение', чтобы протестировать права доступа бота к указанному каналу." FontSize="11.5" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
+                    <Border Background="{DynamicResource CardHoverBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="12">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Loc[TgStep3Title]}" FontWeight="Bold" FontSize="12.5" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,0,4"/>
+                            <TextBlock Text="{Binding Loc[TgStep3Desc]}" FontSize="11.5" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
             </Border>
         </Grid>
     </Grid>

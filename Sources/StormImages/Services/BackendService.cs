@@ -22,7 +22,7 @@ namespace StormImages.Services
 
         private BackendService()
         {
-            _http = new HttpClient { Timeout = TimeSpan.FromMinutes(5) };
+            _http = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
         }
 
         public async Task<BackendStatus> CheckStatusAsync()
@@ -47,6 +47,23 @@ namespace StormImages.Services
             var offline = new BackendStatus { Status = "offline" };
             StatusUpdated?.Invoke(this, offline);
             return offline;
+        }
+
+        public async Task<JObject> LoadModelAsync(string baseModel, string? loraPath)
+        {
+            string url = SettingsService.Instance.Settings.BackendUrl.TrimEnd('/') + "/v1/model/load";
+            string query = $"?base_model={Uri.EscapeDataString(baseModel)}";
+            if (!string.IsNullOrEmpty(loraPath))
+            {
+                query += $"&lora_path={Uri.EscapeDataString(loraPath)}";
+            }
+            var resp = await _http.PostAsync(url + query, null);
+            string respContent = await resp.Content.ReadAsStringAsync();
+            if (!resp.IsSuccessStatusCode)
+            {
+                throw new Exception($"Failed to load model: {respContent}");
+            }
+            return JObject.Parse(respContent);
         }
 
         public async Task<JObject> EditImageAsync(

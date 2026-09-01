@@ -1,6 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 """
-STORM IMAGES - Neural Image Editing Backend Server
+STORM IMAGES - Neural Image Generation and Editing Backend Server
 Powered by Qwen-Image-Edit and ScottzillaSystems/qwen-image-edit-plus-nsfw-lora
 FastAPI + Diffusers + PyTorch + Telegram Integration
 """
@@ -17,7 +17,7 @@ from typing import Optional, Dict, Any, List
 from fastapi import FastAPI, HTTPException, Body, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 from telegram_service import TelegramService
 
@@ -26,7 +26,7 @@ logger = logging.getLogger("storm_images_server")
 
 app = FastAPI(
     title="STORM IMAGES API",
-    description="Neural image editing server for Qwen-Image-Edit and LoRA adapters",
+    description="Neural image generation and editing server for Qwen-Image-Edit and LoRA adapters",
     version="0.0.1"
 )
 
@@ -42,6 +42,7 @@ app.add_middleware(
 class ModelManager:
     def __init__(self):
         self.pipeline = None
+        self.txt2img_pipeline = None
         self.device = "cuda"
         self.torch_dtype = "bfloat16"
         self.base_model_name = "Qwen/Qwen-Image-Edit-2511"
@@ -80,12 +81,12 @@ class ModelManager:
 
         if base_model:
             self.base_model_name = base_model
-        if lora_path:
+        if lora_path is not None:
             self.lora_name = lora_path
 
         try:
             logger.info(f"Loading Base Pipeline: {self.base_model_name}...")
-            from diffusers import DiffusionPipeline, QwenImageEditPipeline
+            from diffusers import DiffusionPipeline, QwenImageEditPipeline, AutoPipelineForText2Image
             
             device = "cuda" if torch.cuda.is_available() else "cpu"
             dtype = torch.bfloat16 if device == "cuda" else torch.float32
@@ -106,13 +107,16 @@ class ModelManager:
             if device == "cuda":
                 self.pipeline.to("cuda")
 
-            if self.lora_name:
+            if self.lora_name and self.lora_name.strip():
                 logger.info(f"Loading LoRA weights: {self.lora_name}...")
-                self.pipeline.load_lora_weights(self.lora_name, adapter_name="edit_lora")
-            
+                try:
+                    self.pipeline.load_lora_weights(self.lora_name, adapter_name="edit_lora")
+                except Exception as lora_ex:
+                    logger.warning(f"LoRA loading warning: {lora_ex}")
+
             self.is_loaded = True
             self.device = device
-            logger.info("Pipeline and LoRA loaded successfully!")
+            logger.info("Pipeline loaded successfully!")
         except Exception as ex:
             self.last_error = str(ex)
             self.is_loaded = False
@@ -124,10 +128,13 @@ class ModelManager:
 model_mgr = ModelManager()
 
 # Request/Response Schemas
-class EditRequest(BaseModel):
-    image_base64: str = Field(..., description="Source image encoded as Base64 PNG/JPEG")
-    prompt: str = Field(..., description="Positive prompt describing desired edits")
+class GenerateRequest(BaseModel):
+    prompt: str = Field(..., description="Positive prompt describing desired image")
     negative_prompt: Optional[str] = Field(default="", description="Negative prompt")
+    image_base64: Optional[str] = Field(default=None, description="Optional source image for Image-to-Image mode")
+    mode: Optional[str] = Field(default="Create", description="'Create' (Text-to-Image) or 'Edit' (Image-to-Image)")
+    width: Optional[int] = Field(default=1024, ge=256, le=2048)
+    height: Optional[int] = Field(default=1024, ge=256, le=2048)
     lora_scale: float = Field(default=0.85, ge=0.0, le=2.0, description="LoRA adapter weight")
     steps: int = Field(default=30, ge=1, le=100, description="Inference steps")
     guidance_scale: float = Field(default=7.5, ge=1.0, le=20.0, description="CFG / Guidance Scale")
@@ -137,6 +144,10 @@ class EditRequest(BaseModel):
     telegram_bot_token: Optional[str] = Field(default=None)
     telegram_chat_id: Optional[str] = Field(default=None)
     telegram_caption: Optional[str] = Field(default=None)
+
+class ModelSelectRequest(BaseModel):
+    base_model: Optional[str] = None
+    lora_path: Optional[str] = None
 
 class TelegramTestRequest(BaseModel):
     bot_token: str
@@ -170,11 +181,31 @@ def get_status():
         "hardware": hw
     }
 
-@app.post("/v1/model/load")
-def load_model(base_model: Optional[str] = None, lora_path: Optional[str] = None):
+@app.get("/v1/models")
+def get_models():
+    return {
+        "base_models": [
+            {"id": "Qwen/Qwen-Image-Edit-2511", "name": "Qwen-Image-Edit 2511", "type": "Edit / Generation", "recommended": True},
+            {"id": "Qwen/Qwen-Image-2509", "name": "Qwen-Image 2509", "type": "Text-to-Image", "recommended": False},
+            {"id": "black-forest-labs/FLUX.1-dev", "name": "FLUX.1 Dev", "type": "Photorealism", "recommended": False},
+            {"id": "stabilityai/stable-diffusion-xl-base-1.0", "name": "SDXL Base 1.0", "type": "Text-to-Image", "recommended": False}
+        ],
+        "loras": [
+            {"id": "ScottzillaSystems/qwen-image-edit-plus-nsfw-lora", "name": "Scottzilla NSFW LoRA", "recommended": True},
+            {"id": "", "name": "None (Base Model Only)", "recommended": False}
+        ]
+    }
+
+@app.post("/v1/model/select")
+def select_model(req: ModelSelectRequest):
     try:
-        model_mgr.load_pipeline(base_model, lora_path)
-        return {"success": True, "message": "Model and LoRA loaded successfully"}
+        model_mgr.load_pipeline(req.base_model, req.lora_path)
+        return {
+            "success": True,
+            "base_model": model_mgr.base_model_name,
+            "lora_name": model_mgr.lora_name,
+            "message": "Model updated and loaded successfully"
+        }
     except Exception as ex:
         raise HTTPException(status_code=500, detail=str(ex))
 
@@ -192,18 +223,21 @@ async def send_to_telegram(req: TelegramSendRequest):
         raise HTTPException(status_code=400, detail=res.get("error"))
     return res
 
+@app.post("/v1/generate")
 @app.post("/v1/edit")
-async def edit_image(req: EditRequest):
+async def generate_or_edit_image(req: GenerateRequest):
     start_time = time.time()
     
-    # 1. Decode Source Image
-    try:
-        img_data = base64.b64decode(req.image_base64.split(",")[-1])
-        source_image = Image.open(io.BytesIO(img_data)).convert("RGB")
-    except Exception as ex:
-        raise HTTPException(status_code=400, detail=f"Invalid base64 image: {ex}")
+    # 1. Check Source Image if provided
+    source_image = None
+    if req.image_base64 and len(req.image_base64.strip()) > 50:
+        try:
+            img_data = base64.b64decode(req.image_base64.split(",")[-1])
+            source_image = Image.open(io.BytesIO(img_data)).convert("RGB")
+        except Exception as ex:
+            logger.warning(f"Could not parse input image: {ex}")
 
-    # 2. Determine Output Directory
+    # 2. Output folder
     save_folder = req.output_dir
     if not save_folder or not os.path.exists(save_folder):
         default_pictures = os.path.join(os.path.expanduser("~"), "Pictures", "STORM_IMAGES")
@@ -219,43 +253,70 @@ async def edit_image(req: EditRequest):
 
     # 4. Generate or Process Image
     output_image = None
+    width = req.width or 1024
+    height = req.height or 1024
+
     if model_mgr.is_loaded and model_mgr.pipeline is not None:
         import torch
         generator = torch.Generator(device=model_mgr.device).manual_seed(seed)
         
         try:
-            # Set adapter weight
-            if hasattr(model_mgr.pipeline, "set_adapters"):
-                model_mgr.pipeline.set_adapters(["edit_lora"], adapter_weights=[req.lora_scale])
-            
-            result = model_mgr.pipeline(
-                image=source_image,
-                prompt=req.prompt,
-                negative_prompt=req.negative_prompt,
-                num_inference_steps=req.steps,
-                guidance_scale=req.guidance_scale,
-                generator=generator
-            )
+            if hasattr(model_mgr.pipeline, "set_adapters") and model_mgr.lora_name:
+                try:
+                    model_mgr.pipeline.set_adapters(["edit_lora"], adapter_weights=[req.lora_scale])
+                except Exception:
+                    pass
+
+            if source_image is not None:
+                # Image-to-Image / Edit mode
+                result = model_mgr.pipeline(
+                    image=source_image,
+                    prompt=req.prompt,
+                    negative_prompt=req.negative_prompt,
+                    num_inference_steps=req.steps,
+                    guidance_scale=req.guidance_scale,
+                    generator=generator
+                )
+            else:
+                # Text-to-Image mode
+                result = model_mgr.pipeline(
+                    prompt=req.prompt,
+                    negative_prompt=req.negative_prompt,
+                    width=width,
+                    height=height,
+                    num_inference_steps=req.steps,
+                    guidance_scale=req.guidance_scale,
+                    generator=generator
+                )
             output_image = result.images[0]
         except Exception as ex:
             logger.error(f"Inference execution error: {ex}")
             raise HTTPException(status_code=500, detail=f"Inference error: {ex}")
     else:
-        # Development / Direct Pass-through Mock if weights are not yet downloaded
-        logger.warning("Pipeline is not loaded in memory; generating processed placeholder...")
-        output_image = source_image.copy()
+        # Development / Synthetic render when model is loading or in stand-by
+        logger.warning("Pipeline is not loaded in memory; creating placeholder generation...")
+        if source_image is not None:
+            output_image = source_image.copy()
+        else:
+            output_image = Image.new("RGB", (width, height), color=(20, 15, 35))
+            draw = ImageDraw.Draw(output_image)
+            draw.rectangle([(10, 10), (width - 10, height - 10)], outline=(168, 85, 247), width=3)
+            # Add decorative neon elements
+            draw.text((30, 30), "STORM IMAGES GENERATION", fill=(0, 210, 255))
+            draw.text((30, 70), f"Prompt: {req.prompt[:60]}...", fill=(255, 255, 255))
+            draw.text((30, 110), f"Seed: {seed} | LoRA: {req.lora_scale}", fill=(168, 85, 247))
 
-    # 5. Save Output Image to Output Directory
+    # 5. Save Output Image & Metadata JSON
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"STORM_IMG_{timestamp}_{seed}.png"
     out_path = os.path.join(save_folder, filename)
     output_image.save(out_path, format="PNG")
 
-    # Save metadata JSON
     meta_path = os.path.join(save_folder, f"STORM_IMG_{timestamp}_{seed}.json")
     metadata = {
         "timestamp": timestamp,
         "seed": seed,
+        "mode": req.mode or ("Edit" if source_image is not None else "Create"),
         "prompt": req.prompt,
         "negative_prompt": req.negative_prompt,
         "lora_scale": req.lora_scale,

@@ -2,28 +2,28 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Colors -->
-    <Color x:Key="StormAppBackgroundColor">#000000</Color>
-    <Color x:Key="StormNavSidebarColor">#07080D</Color>
-    <Color x:Key="StormCardBackgroundColor">#0E1017</Color>
-    <Color x:Key="StormCardHoverColor">#161924</Color>
-    <Color x:Key="StormCardBorderColor">#1F2438</Color>
-    <Color x:Key="StormGaugeTrackColor">#1E2333</Color>
+    <Color x:Key="StormAppBackgroundColor">#10141D</Color>
+    <Color x:Key="StormNavSidebarColor">#0B0E14</Color>
+    <Color x:Key="StormCardBackgroundColor">#181F2C</Color>
+    <Color x:Key="StormCardHoverColor">#20293A</Color>
+    <Color x:Key="StormCardBorderColor">#2A364F</Color>
+    <Color x:Key="StormGaugeTrackColor">#263348</Color>
 
-    <Color x:Key="StormAccentColor">#00C2E8</Color>
-    <Color x:Key="StormAccentSecondaryColor">#38BDF8</Color>
-    <Color x:Key="StormAccentHoverColor">#7DD3FC</Color>
-    <Color x:Key="StormAccentPressedColor">#0284C7</Color>
-    <Color x:Key="StormGlowColor">#3300C2E8</Color>
+    <Color x:Key="StormAccentColor">#00D2FF</Color>
+    <Color x:Key="StormAccentSecondaryColor">#7928CA</Color>
+    <Color x:Key="StormAccentHoverColor">#38E1FF</Color>
+    <Color x:Key="StormAccentPressedColor">#00B4DB</Color>
+    <Color x:Key="StormGlowColor">#3300D2FF</Color>
 
     <Color x:Key="StormTextPrimaryColor">#FFFFFF</Color>
-    <Color x:Key="StormTextSecondaryColor">#F8FAFC</Color>
+    <Color x:Key="StormTextSecondaryColor">#F1F5F9</Color>
     <Color x:Key="StormTextMutedColor">#E2E8F0</Color>
 
-    <Color x:Key="StormBadgeSafeBgColor">#064E3B</Color>
+    <Color x:Key="StormBadgeSafeBgColor">#052E16</Color>
     <Color x:Key="StormBadgeSafeTextColor">#34D399</Color>
-    <Color x:Key="StormBadgeRecommendedBgColor">#0C4A6E</Color>
+    <Color x:Key="StormBadgeRecommendedBgColor">#083344</Color>
     <Color x:Key="StormBadgeRecommendedTextColor">#38BDF8</Color>
-    <Color x:Key="StormBadgeAdvancedBgColor">#78350F</Color>
+    <Color x:Key="StormBadgeAdvancedBgColor">#451A03</Color>
     <Color x:Key="StormBadgeAdvancedTextColor">#FBBF24</Color>
 
     <!-- Brushes -->
@@ -52,22 +52,22 @@
     <SolidColorBrush x:Key="BadgeAdvancedTextBrush" Color="{StaticResource StormBadgeAdvancedTextColor}"/>
 
     <!-- Sidebar Group Navigation Brushes -->
-    <SolidColorBrush x:Key="NavGroupHeaderBrush" Color="#11141E"/>
-    <SolidColorBrush x:Key="NavGroupHoverBrush" Color="#191D2C"/>
-    <SolidColorBrush x:Key="NavGroupBorderBrush" Color="#20283E"/>
-    <SolidColorBrush x:Key="NavGroupGuidelineBrush" Color="#1A2033"/>
-    <SolidColorBrush x:Key="NavGroupChevronBgBrush" Color="#1A00C2E8"/>
-    <SolidColorBrush x:Key="NavGroupChevronStrokeBrush" Color="#00C2E8"/>
+    <SolidColorBrush x:Key="NavGroupHeaderBrush" Color="#161F33"/>
+    <SolidColorBrush x:Key="NavGroupHoverBrush" Color="#1E2A44"/>
+    <SolidColorBrush x:Key="NavGroupBorderBrush" Color="#263550"/>
+    <SolidColorBrush x:Key="NavGroupGuidelineBrush" Color="#1C273E"/>
+    <SolidColorBrush x:Key="NavGroupChevronBgBrush" Color="#1A00D2FF"/>
+    <SolidColorBrush x:Key="NavGroupChevronStrokeBrush" Color="#00D2FF"/>
     <SolidColorBrush x:Key="NavGroupTextBrush" Color="#FFFFFF"/>
 
     <!-- Gradients -->
     <LinearGradientBrush x:Key="StormHeroGradient" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#00B4D8" Offset="0.0"/>
-        <GradientStop Color="#0284C7" Offset="1.0"/>
+        <GradientStop Color="#00D2FF" Offset="0.0"/>
+        <GradientStop Color="#7928CA" Offset="1.0"/>
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="StormCardGradient" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#121520" Offset="0.0"/>
-        <GradientStop Color="#08090E" Offset="1.0"/>
+        <GradientStop Color="#1C2433" Offset="0.0"/>
+        <GradientStop Color="#141A26" Offset="1.0"/>
     </LinearGradientBrush>
 </ResourceDictionary>

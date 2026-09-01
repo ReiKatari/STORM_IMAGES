@@ -3,186 +3,174 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StormImages"
         xmlns:vm="clr-namespace:StormImages.ViewModels"
-        xmlns:views="clr-namespace:StormImages.Views"
-        Icon="Assets/AppIcon.ico"
-        Title="STORM IMAGES 0.0.1"
-        Height="900" Width="1440"
+        mc:Ignorable="d"
+        Title="STORM IMAGES" Height="860" Width="1360"
         MinHeight="720" MinWidth="1100"
         WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="False"
         Background="{DynamicResource AppBackgroundBrush}">
 
-    <Window.DataContext>
-        <vm:MainViewModel/>
-    </Window.DataContext>
-
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="48"
-                      CornerRadius="0"
-                      GlassFrameThickness="0"
+        <WindowChrome CaptionHeight="42"
                       ResizeBorderThickness="6"
-                      UseAeroCaptionButtons="False"/>
+                      GlassFrameThickness="0"
+                      CornerRadius="0"/>
     </WindowChrome.WindowChrome>
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
+            <RowDefinition Height="42"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
-        <!-- Custom TitleBar -->
-        <Grid Grid.Row="0" Background="{DynamicResource NavSidebarBrush}">
+        <!-- Custom Fluent TitleBar -->
+        <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Storm Logo & App Title -->
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
-                <Border Background="{DynamicResource AccentGlowBrush}" BorderBrush="{DynamicResource AccentPrimaryBrush}" BorderThickness="1" CornerRadius="8" Padding="6" Margin="0,0,10,0" VerticalAlignment="Center">
-                    <Path Data="{StaticResource GeoMagic}" Fill="{DynamicResource AccentPrimaryBrush}" Width="15" Height="15" Stretch="Uniform"/>
+            <!-- Brand Icon & Title -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                <Border Width="24" Height="24" CornerRadius="6" Background="{DynamicResource AccentGlowBrush}" BorderBrush="{DynamicResource AccentPrimaryBrush}" BorderThickness="1" Margin="0,0,10,0">
+                    <Path Data="{StaticResource GeoSparkles}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="STORM" FontWeight="Bold" FontSize="15" Foreground="{DynamicResource AccentPrimaryBrush}" VerticalAlignment="Center"/>
-                <TextBlock Text=" IMAGES" FontWeight="SemiBold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
-                
-                <!-- Version Badge -->
-                <Border Background="{DynamicResource AccentGlowBrush}" BorderBrush="{DynamicResource AccentPrimaryBrush}" BorderThickness="1" CornerRadius="8" Padding="6,2" Margin="10,0,0,0" VerticalAlignment="Center">
-                    <TextBlock Text="0.0.1" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource AccentPrimaryBrush}"/>
+                <TextBlock Text="{Binding Loc[AppTitle]}" FontWeight="Bold" FontSize="13.5" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                <Border Background="{DynamicResource CardHoverBrush}" CornerRadius="4" Padding="6,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="0.0.1" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource AccentPrimaryBrush}"/>
                 </Border>
             </StackPanel>
 
-            <!-- TitleBar Window Control Buttons -->
+            <!-- Window Caption Action Buttons -->
             <StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
-                <Button x:Name="BtnMinimize" Click="BtnMinimize_Click" Width="46" Height="48" Background="Transparent" BorderThickness="0" Cursor="Hand">
-                    <TextBlock Text="─" FontSize="12" Foreground="{DynamicResource TextMutedBrush}"/>
+                <Button Click="BtnMinimize_Click" Width="46" Height="42" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <TextBlock Text="🗕" FontSize="12" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </Button>
-                <Button x:Name="BtnMaximize" Click="BtnMaximize_Click" Width="46" Height="48" Background="Transparent" BorderThickness="0" Cursor="Hand">
-                    <TextBlock Text="◻" FontSize="14" Foreground="{DynamicResource TextMutedBrush}"/>
+                <Button Click="BtnMaximize_Click" Width="46" Height="42" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <TextBlock x:Name="TxtMaximizeIcon" Text="🗖" FontSize="12" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </Button>
-                <Button x:Name="BtnClose" Click="BtnClose_Click" Width="48" Height="48" Background="Transparent" BorderThickness="0" Cursor="Hand">
-                    <TextBlock Text="✕" FontSize="13" Foreground="{DynamicResource TextMutedBrush}"/>
+                <Button Click="BtnClose_Click" Width="46" Height="42" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <TextBlock Text="✕" FontSize="12" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </Button>
             </StackPanel>
         </Grid>
 
-        <!-- Main Workspace Area: Sidebar + Content -->
+        <!-- Main Body -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="240"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Navigation Sidebar -->
-            <Border Grid.Column="0" Background="{DynamicResource NavSidebarBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,1,0">
+            <!-- Sidebar Navigation -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource SideBarBackgroundBrush}"
+                    BorderBrush="{DynamicResource CardBorderBrush}"
+                    BorderThickness="0,0,1,0"
+                    Padding="14,18,14,14">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Nav Buttons -->
-                    <StackPanel Grid.Row="0" Margin="12,16,12,0">
-                        <!-- Generation -->
-                        <RadioButton GroupName="NavGroup"
-                                     IsChecked="True"
+                    <!-- Nav Items -->
+                    <StackPanel Grid.Row="0">
+                        <RadioButton IsChecked="True"
                                      Command="{Binding NavigateCommand}"
                                      CommandParameter="Generation"
                                      Style="{DynamicResource StormNavRadioButton}">
                             <StackPanel Orientation="Horizontal">
-                                <Path Data="{StaticResource GeoImages}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                <TextBlock Text="Редактор &amp; Генерация" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
+                                <Path Data="{StaticResource GeoSparkles}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
+                                <TextBlock Text="{Binding Loc[NavGeneration]}" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
                             </StackPanel>
                         </RadioButton>
 
-                        <!-- Gallery -->
-                        <RadioButton GroupName="NavGroup"
-                                     Command="{Binding NavigateCommand}"
+                        <RadioButton Command="{Binding NavigateCommand}"
                                      CommandParameter="Gallery"
                                      Style="{DynamicResource StormNavRadioButton}">
                             <StackPanel Orientation="Horizontal">
-                                <Path Data="{StaticResource GeoGallery}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                <TextBlock Text="Галерея &amp; История" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
+                                <Path Data="{StaticResource GeoGallery}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
+                                <TextBlock Text="{Binding Loc[NavGallery]}" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
                             </StackPanel>
                         </RadioButton>
 
-                        <!-- Telegram -->
-                        <RadioButton GroupName="NavGroup"
-                                     Command="{Binding NavigateCommand}"
+                        <RadioButton Command="{Binding NavigateCommand}"
                                      CommandParameter="Telegram"
                                      Style="{DynamicResource StormNavRadioButton}">
                             <StackPanel Orientation="Horizontal">
-                                <Path Data="{StaticResource GeoTelegram}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                <TextBlock Text="Telegram-канал" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
+                                <Path Data="{StaticResource GeoSend}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
+                                <TextBlock Text="{Binding Loc[NavTelegram]}" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
                             </StackPanel>
                         </RadioButton>
 
-                        <!-- Settings -->
-                        <RadioButton GroupName="NavGroup"
-                                     Command="{Binding NavigateCommand}"
+                        <RadioButton Command="{Binding NavigateCommand}"
                                      CommandParameter="Settings"
                                      Style="{DynamicResource StormNavRadioButton}">
                             <StackPanel Orientation="Horizontal">
-                                <Path Data="{StaticResource GeoSettings}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                <TextBlock Text="Настройки" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
+                                <Path Data="{StaticResource GeoSettings}" Fill="{DynamicResource AccentPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" Margin="0,0,12,0"/>
+                                <TextBlock Text="{Binding Loc[NavSettings]}" FontWeight="SemiBold" FontSize="12.5" VerticalAlignment="Center"/>
                             </StackPanel>
                         </RadioButton>
                     </StackPanel>
 
-                    <!-- Sidebar Backend Status Box -->
-                    <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Margin="12,0,12,16" Padding="12">
+                    <!-- Sidebar Footer: Server Quick Launcher -->
+                    <Border Grid.Row="1"
+                            Background="{DynamicResource CardBackgroundBrush}"
+                            BorderBrush="{DynamicResource CardBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="12">
                         <StackPanel>
-                            <Grid Margin="0,0,0,6">
-                                <TextBlock Text="AI Сервер (Qwen)" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                                <Ellipse Width="8" Height="8" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                         Fill="{Binding Backend.Status, Converter={StaticResource BoolToColorConverter}}"/>
-                            </Grid>
-                            <TextBlock Text="{Binding Backend.Hardware.DeviceName, FallbackValue='Detecting...'}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis"/>
-                            <Button Command="{Binding LaunchBackendCommand}" Content="▶ Запустить сервер" Margin="0,8,0,0" Padding="8,4" FontSize="10.5" HorizontalAlignment="Stretch"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <Path Data="{StaticResource GeoServer}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" Margin="0,0,6,0"/>
+                                <TextBlock Text="{Binding Loc[ServerStatusTitle]}" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            </StackPanel>
+
+                            <Button Command="{Binding LaunchBackendCommand}"
+                                    Content="{Binding Loc[BtnStartServer]}"
+                                    FontSize="11"
+                                    Padding="10,6"
+                                    HorizontalAlignment="Stretch"
+                                    Style="{DynamicResource StormSecondaryButton}"/>
                         </StackPanel>
                     </Border>
                 </Grid>
             </Border>
 
-            <!-- Page Host Area -->
-            <ContentControl Grid.Column="1" Content="{Binding CurrentView}">
-                <ContentControl.Resources>
-                    <DataTemplate DataType="{x:Type vm:GenerationViewModel}">
-                        <views:GenerationPage/>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:GalleryViewModel}">
-                        <views:GalleryPage/>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:TelegramViewModel}">
-                        <views:TelegramPage/>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-                        <views:SettingsPage/>
-                    </DataTemplate>
-                </ContentControl.Resources>
-            </ContentControl>
+            <!-- Main Content Area -->
+            <ContentControl Grid.Column="1" Content="{Binding CurrentView}"/>
         </Grid>
 
-        <!-- Status Footer Bar -->
-        <Grid Grid.Row="2" Background="{DynamicResource NavSidebarBrush}" Margin="0,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <!-- Bottom Status Bar -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource TitleBarBackgroundBrush}"
+                BorderBrush="{DynamicResource CardBorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="16,0">
+            <Grid VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <Ellipse Width="8" Height="8" Margin="0,0,8,0"
+                             Fill="{Binding Backend.IsOnline, Converter={StaticResource BoolToColorConverter}}"/>
+                    <TextBlock Text="{Binding Loc[StatusLabel]}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,4,0"/>
+                    <TextBlock Text="{Binding Backend.Status}" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,16,0"/>
 
-            <!-- Status Left -->
-            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
-                <TextBlock Text="⚡ Статус: " FontSize="11" Foreground="{DynamicResource TextMutedBrush}"/>
-                <TextBlock Text="{Binding StatusMessage}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentPrimaryBrush}"/>
-                <TextBlock Text="  |  Модель: Qwen-Image-Edit-2511 + Scottzilla NSFW LoRA" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="8,0,0,0"/>
-            </StackPanel>
+                    <TextBlock Text="{Binding Loc[ModelLabel]}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,4,0"/>
+                    <TextBlock Text="{Binding Backend.Model}" FontSize="11" Foreground="{DynamicResource AccentPrimaryBrush}" Margin="0,0,16,0"/>
 
-            <!-- Status Right -->
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-                <TextBlock Text="STORM TEAM © 2026" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}"/>
-            </StackPanel>
-        </Grid>
+                    <TextBlock Text="{Binding Backend.Device}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,8,0"/>
+                    <TextBlock Text="{Binding Backend.VramUsedGb, StringFormat='{}VRAM: {0:F1} GB'}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}"/>
+                </StackPanel>
+
+                <TextBlock HorizontalAlignment="Right"
+                           Text="{Binding Loc[FooterCopyright]}"
+                           FontSize="10.5"
+                           Foreground="{DynamicResource TextMutedBrush}"/>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

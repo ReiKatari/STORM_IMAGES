@@ -30,8 +30,13 @@ namespace StormImages.Themes
                 string themePath = theme switch
                 {
                     ThemeType.StormMidnight => "Themes/StormMidnightTheme.xaml",
+                    ThemeType.StormDark => "Themes/StormDarkTheme.xaml",
                     ThemeType.StormNight => "Themes/StormNightTheme.xaml",
                     ThemeType.StormDay => "Themes/StormDayTheme.xaml",
+                    ThemeType.StormMatrix => "Themes/StormMatrixTheme.xaml",
+                    ThemeType.StormCyberpunk => "Themes/StormCyberpunkTheme.xaml",
+                    ThemeType.StormFantasy => "Themes/StormFantasyTheme.xaml",
+                    ThemeType.StormWarhammer => "Themes/StormWarhammerTheme.xaml",
                     _ => "Themes/StormMidnightTheme.xaml"
                 };
 
