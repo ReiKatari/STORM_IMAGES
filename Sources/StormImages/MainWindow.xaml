@@ -127,10 +127,14 @@
                             CornerRadius="10"
                             Padding="12">
                         <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                <Path Data="{StaticResource GeoServer}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" Margin="0,0,6,0"/>
-                                <TextBlock Text="{Binding Loc[ServerStatusTitle]}" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource TextPrimaryBrush}"/>
-                            </StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource GeoServer}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" Margin="0,0,6,0"/>
+                                    <TextBlock Text="{Binding Loc[ServerStatusTitle]}" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                </StackPanel>
+                                <Ellipse Width="8" Height="8" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                         Fill="{Binding Backend.Status, Converter={StaticResource StatusToBrushConverter}}"/>
+                            </Grid>
 
                             <Button Command="{Binding LaunchBackendCommand}"
                                     Content="{Binding Loc[BtnStartServer]}"
@@ -156,7 +160,7 @@
             <Grid VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <Ellipse Width="8" Height="8" Margin="0,0,8,0"
-                             Fill="{Binding Backend.IsOnline, Converter={StaticResource BoolToColorConverter}}"/>
+                             Fill="{Binding Backend.Status, Converter={StaticResource StatusToBrushConverter}}"/>
                     <TextBlock Text="{Binding Loc[StatusLabel]}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,4,0"/>
                     <TextBlock Text="{Binding Backend.Status}" FontWeight="SemiBold" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,16,0"/>
 

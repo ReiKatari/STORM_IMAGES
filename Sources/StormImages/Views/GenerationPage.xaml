@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="StormImages.Views.GenerationPage"
+<UserControl x:Class="StormImages.Views.GenerationPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -40,7 +40,7 @@
                                          Style="{DynamicResource StormNavRadioButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Path Data="{StaticResource GeoSparkles}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Loc[ModeTextToImage]}" FontWeight="SemiBold" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Loc[ModeTextToImage]}" FontWeight="SemiBold" FontSize="11.5" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </RadioButton>
 
@@ -51,13 +51,17 @@
                                          Style="{DynamicResource StormNavRadioButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Path Data="{StaticResource GeoMagic}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                    <TextBlock Text="{Binding Loc[ModeImageToImage]}" FontWeight="SemiBold" FontSize="11.5" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Loc[ModeImageToImage]}" FontWeight="SemiBold" FontSize="11.5" VerticalAlignment="Center" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </RadioButton>
                         </Grid>
 
-                        <TextBlock Text="{Binding IsTextToImageMode, Converter={x:Null}}"
-                                   FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Loc[ModeT2IDesc]}"
+                                   Visibility="{Binding IsTextToImageMode, Converter={StaticResource BoolToVisConverter}}"
+                                   FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Loc[ModeI2IDesc]}"
+                                   Visibility="{Binding IsTextToImageMode, Converter={StaticResource InverseBoolToVisConverter}}"
+                                   FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
 
@@ -80,24 +84,12 @@
                         <TextBlock Text="{Binding Loc[BaseModelLabel]}" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,4"/>
                         <ComboBox ItemsSource="{Binding AvailableBaseModels}"
                                   SelectedItem="{Binding SelectedBaseModel}"
-                                  IsEditable="True"
-                                  Padding="8,6"
-                                  FontSize="11.5"
-                                  Background="#0A0817"
-                                  Foreground="{DynamicResource TextPrimaryBrush}"
-                                  BorderBrush="{DynamicResource CardBorderBrush}"
                                   Margin="0,0,0,10"/>
 
                         <!-- LoRA Adapter Dropdown -->
                         <TextBlock Text="{Binding Loc[LoRAAdapterLabel]}" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,4"/>
                         <ComboBox ItemsSource="{Binding AvailableLoRAs}"
                                   SelectedItem="{Binding SelectedLoRA}"
-                                  IsEditable="True"
-                                  Padding="8,6"
-                                  FontSize="11.5"
-                                  Background="#0A0817"
-                                  Foreground="{DynamicResource TextPrimaryBrush}"
-                                  BorderBrush="{DynamicResource CardBorderBrush}"
                                   Margin="0,0,0,10"/>
 
                         <Grid>

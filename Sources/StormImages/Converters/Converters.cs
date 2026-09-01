@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -66,6 +66,23 @@ namespace StormImages.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return (value is bool b && b) ? TrueBrush : FalseBrush;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class StatusToBrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string status = value?.ToString()?.ToLowerInvariant() ?? "";
+            if (status == "ready") return new SolidColorBrush(Color.FromRgb(16, 185, 129)); // Green
+            if (status == "idle") return new SolidColorBrush(Color.FromRgb(0, 210, 255));  // Cyan
+            if (status == "loading") return new SolidColorBrush(Color.FromRgb(245, 158, 11)); // Amber
+            return new SolidColorBrush(Color.FromRgb(239, 68, 68)); // Red
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

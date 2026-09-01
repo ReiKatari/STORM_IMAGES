@@ -16,13 +16,21 @@ namespace StormImages.Services
         public static BackendService Instance => _instance ??= new BackendService();
 
         private readonly HttpClient _http;
+        private readonly HttpClient _longHttp;
         private Process? _serverProcess;
+        private System.Threading.Timer? _pollTimer;
 
         public event EventHandler<BackendStatus>? StatusUpdated;
 
         private BackendService()
         {
-            _http = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
+            _http = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
+            _longHttp = new HttpClient { Timeout = TimeSpan.FromMinutes(10) };
+
+            _pollTimer = new System.Threading.Timer(async _ =>
+            {
+                await CheckStatusAsync();
+            }, null, TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(3));
         }
 
         public async Task<BackendStatus> CheckStatusAsync()
@@ -57,7 +65,7 @@ namespace StormImages.Services
             {
                 query += $"&lora_path={Uri.EscapeDataString(loraPath)}";
             }
-            var resp = await _http.PostAsync(url + query, null);
+            var resp = await _longHttp.PostAsync(url + query, null);
             string respContent = await resp.Content.ReadAsStringAsync();
             if (!resp.IsSuccessStatusCode)
             {
@@ -99,7 +107,7 @@ namespace StormImages.Services
 
             string json = JsonConvert.SerializeObject(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var resp = await _http.PostAsync(url, content);
+            var resp = await _longHttp.PostAsync(url, content);
 
             string respContent = await resp.Content.ReadAsStringAsync();
             if (!resp.IsSuccessStatusCode)
