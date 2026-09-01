@@ -29,6 +29,10 @@
     <EmbeddedResource Include="Resources\badge_logo.png" Link="Payload\badge_logo.png" Condition="Exists('Resources\badge_logo.png')" />
     <EmbeddedResource Include="Resources\StormLogo.png" Link="Payload\StormLogo.png" Condition="Exists('Resources\StormLogo.png')" />
     <EmbeddedResource Include="..\..\Files\StormLogo.png" Link="Payload\StormLogoRoot.png" Condition="Exists('..\..\Files\StormLogo.png')" />
+    <EmbeddedResource Include="..\StormImagesServer\app.py" Link="Payload\app.py" Condition="Exists('..\StormImagesServer\app.py')" />
+    <EmbeddedResource Include="..\StormImagesServer\run_server.bat" Link="Payload\run_server.bat" Condition="Exists('..\StormImagesServer\run_server.bat')" />
+    <EmbeddedResource Include="..\StormImagesServer\telegram_service.py" Link="Payload\telegram_service.py" Condition="Exists('..\StormImagesServer\telegram_service.py')" />
+    <EmbeddedResource Include="..\StormImagesServer\README.md" Link="Payload\Server_README.md" Condition="Exists('..\StormImagesServer\README.md')" />
   </ItemGroup>
 
 </Project>

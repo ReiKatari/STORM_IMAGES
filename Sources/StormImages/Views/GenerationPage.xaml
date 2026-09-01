@@ -8,15 +8,15 @@
              d:DataContext="{d:DesignInstance Type=vm:GenerationViewModel}"
              Background="Transparent">
 
-    <Grid Margin="24,16,24,24">
+    <Grid Margin="20,16,20,20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="440"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="490"/>
+            <ColumnDefinition Width="18"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Left Controls Column -->
-        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,10,0">
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,8,0">
             <StackPanel Orientation="Vertical">
                 
                 <!-- 1. Mode Selector Card -->
@@ -37,6 +37,7 @@
                                          IsChecked="{Binding IsTextToImageMode}"
                                          GroupName="GenModeGroup"
                                          Margin="0,0,4,0"
+                                         Padding="10,8"
                                          Style="{DynamicResource StormNavRadioButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Path Data="{StaticResource GeoSparkles}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -48,6 +49,7 @@
                                          IsChecked="{Binding IsTextToImageMode, Converter={StaticResource InverseBoolConverter}}"
                                          GroupName="GenModeGroup"
                                          Margin="4,0,0,0"
+                                         Padding="10,8"
                                          Style="{DynamicResource StormNavRadioButton}">
                                 <StackPanel Orientation="Horizontal">
                                     <Path Data="{StaticResource GeoMagic}" Fill="{DynamicResource AccentPrimaryBrush}" Width="14" Height="14" Stretch="Uniform" VerticalAlignment="Center" Margin="0,0,8,0"/>
@@ -92,23 +94,23 @@
                                   SelectedItem="{Binding SelectedLoRA}"
                                   Margin="0,0,0,10"/>
 
-                        <Grid>
+                        <StackPanel Margin="0,4,0,0">
                             <Button Command="{Binding LoadModelCommand}"
                                     IsEnabled="{Binding IsModelLoading, Converter={StaticResource InverseBoolConverter}}"
                                     Content="{Binding Loc[BtnLoadModel]}"
-                                    Padding="12,6"
+                                    Padding="14,8"
                                     FontSize="11.5"
-                                    HorizontalAlignment="Left"
+                                    HorizontalAlignment="Stretch"
                                     Style="{DynamicResource StormSecondaryButton}"/>
 
                             <TextBlock Text="{Binding ModelLoadStatus}"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
+                                       Visibility="{Binding ModelLoadStatus, Converter={StaticResource EmptyStringToVisConverter}}"
+                                       Margin="0,8,0,0"
                                        FontSize="11"
-                                       FontWeight="SemiBold"
+                                       FontWeight="Medium"
                                        Foreground="{DynamicResource AccentPrimaryBrush}"
-                                       TextTrimming="CharacterEllipsis"/>
-                        </Grid>
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 

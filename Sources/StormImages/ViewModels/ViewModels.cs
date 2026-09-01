@@ -188,6 +188,18 @@ namespace StormImages.ViewModels
         [RelayCommand]
         public async Task LoadModel()
         {
+            var st = await BackendService.Instance.CheckStatusAsync();
+            if (st.Status == "offline")
+            {
+                StormMessageBox.Show(
+                    "Локальный AI-сервер в данный момент отключен.\nПожалуйста, запустите сервер с помощью кнопки «Запустить сервер» в нижней части бокового меню.",
+                    Loc["ModelSelectionTitle"],
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                ModelLoadStatus = Loc["ModelStatusIdle"];
+                return;
+            }
+
             IsModelLoading = true;
             ModelLoadStatus = Loc["ModelStatusLoading"];
 
@@ -284,6 +296,17 @@ namespace StormImages.ViewModels
             if (!IsTextToImageMode && (string.IsNullOrEmpty(SourceImagePath) || !File.Exists(SourceImagePath)))
             {
                 StormMessageBox.Show(Loc["MsgInputRequiredText"], Loc["MsgInputRequiredTitle"], MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var st = await BackendService.Instance.CheckStatusAsync();
+            if (st.Status == "offline")
+            {
+                StormMessageBox.Show(
+                    "Локальный AI-сервер в данный момент отключен.\nПожалуйста, запустите сервер с помощью кнопки «Запустить сервер» в нижней части бокового меню перед началом генерации.",
+                    Loc["AppTitle"],
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
                 return;
             }
 

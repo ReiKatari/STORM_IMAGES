@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using StormImages.Services;
@@ -57,17 +57,23 @@ namespace StormImages.Controls
             {
                 if (image == MessageBoxImage.Error)
                 {
-                    IconPath.Data = (Geometry)Application.Current.FindResource("GeoTrash");
-                    IconPath.Fill = Brushes.Crimson;
+                    IconPath.Data = (Geometry)Application.Current.FindResource("GeoError");
+                    IconPath.Fill = new SolidColorBrush(Color.FromRgb(239, 68, 68)); // Crimson / Red
                 }
                 else if (image == MessageBoxImage.Warning)
                 {
-                    IconPath.Data = (Geometry)Application.Current.FindResource("GeoSparkles");
-                    IconPath.Fill = (Brush)Application.Current.FindResource("AccentPrimaryBrush");
+                    IconPath.Data = (Geometry)Application.Current.FindResource("GeoAlert");
+                    IconPath.Fill = new SolidColorBrush(Color.FromRgb(245, 158, 11)); // Amber
                 }
                 else if (image == MessageBoxImage.Question)
                 {
                     IconPath.Data = (Geometry)Application.Current.FindResource("GeoMagic");
+                    IconPath.Fill = (Brush)Application.Current.FindResource("AccentPrimaryBrush");
+                }
+                else
+                {
+                    IconPath.Data = (Geometry)Application.Current.FindResource("GeoInfo");
+                    IconPath.Fill = (Brush)Application.Current.FindResource("AccentPrimaryBrush");
                 }
             }
             catch { }
@@ -81,9 +87,15 @@ namespace StormImages.Controls
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     var dlg = new StormMessageBox(message, title, buttons, image);
-                    if (Application.Current.MainWindow != null && Application.Current.MainWindow.IsLoaded)
+                    Window? mainWin = Application.Current.MainWindow;
+                    if (mainWin != null && mainWin.IsVisible)
                     {
-                        dlg.Owner = Application.Current.MainWindow;
+                        dlg.Owner = mainWin;
+                        dlg.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    }
+                    else
+                    {
+                        dlg.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                     }
                     dlg.ShowDialog();
                     res = dlg.Result;

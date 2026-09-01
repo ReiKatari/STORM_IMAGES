@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:StormImages.ViewModels"
         mc:Ignorable="d"
-        Title="STORM IMAGES" Height="860" Width="1360"
-        MinHeight="720" MinWidth="1100"
+        Title="STORM IMAGES" Height="880" Width="1380"
+        MinHeight="750" MinWidth="1200"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="False"
@@ -63,7 +63,7 @@
         <!-- Main Body -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="240"/>
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 

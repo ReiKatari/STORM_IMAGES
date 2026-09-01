@@ -165,19 +165,23 @@ namespace StormImages.Services
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string[] potentialPaths = new string[]
+                string[] potentialBatPaths = new string[]
                 {
                     Path.Combine(baseDir, "StormImagesServer", "run_server.bat"),
+                    Path.Combine(baseDir, "run_server.bat"),
                     Path.Combine(baseDir, "Sources", "StormImagesServer", "run_server.bat"),
                     Path.Combine(baseDir, "..", "StormImagesServer", "run_server.bat"),
+                    Path.Combine(baseDir, "..", "Sources", "StormImagesServer", "run_server.bat"),
                     Path.Combine(baseDir, "..", "..", "..", "..", "Sources", "StormImagesServer", "run_server.bat"),
                     Path.Combine(baseDir, "..", "..", "..", "..", "StormImagesServer", "run_server.bat"),
                     @"E:\STORM IMAGES\Sources\StormImagesServer\run_server.bat",
-                    @"E:\STORM IMAGES\Assembling\StormImagesServer\run_server.bat"
+                    @"E:\STORM IMAGES\Assembling\StormImagesServer\run_server.bat",
+                    @"C:\Program Files\STORM IMAGES\StormImagesServer\run_server.bat",
+                    @"C:\Program Files (x86)\STORM IMAGES\StormImagesServer\run_server.bat"
                 };
 
                 string? foundScript = null;
-                foreach (var p in potentialPaths)
+                foreach (var p in potentialBatPaths)
                 {
                     if (File.Exists(p))
                     {
@@ -191,13 +195,71 @@ namespace StormImages.Services
                     var psi = new ProcessStartInfo
                     {
                         FileName = "cmd.exe",
-                        Arguments = $"/c \"{foundScript}\"",
+                        Arguments = $"/c start \"STORM IMAGES Server\" \"{foundScript}\"",
                         WorkingDirectory = Path.GetDirectoryName(foundScript),
                         UseShellExecute = true,
                         CreateNoWindow = false
                     };
                     _serverProcess = Process.Start(psi);
                 }
+                else
+                {
+                    // Direct python / uv fallback
+                    string[] potentialPyPaths = new string[]
+                    {
+                        Path.Combine(baseDir, "StormImagesServer", "app.py"),
+                        Path.Combine(baseDir, "app.py"),
+                        Path.Combine(baseDir, "Sources", "StormImagesServer", "app.py"),
+                        Path.Combine(baseDir, "..", "StormImagesServer", "app.py"),
+                        Path.Combine(baseDir, "..", "..", "..", "..", "Sources", "StormImagesServer", "app.py"),
+                        @"E:\STORM IMAGES\Sources\StormImagesServer\app.py",
+                        @"E:\STORM IMAGES\Assembling\StormImagesServer\app.py"
+                    };
+
+                    string? foundPy = null;
+                    foreach (var p in potentialPyPaths)
+                    {
+                        if (File.Exists(p))
+                        {
+                            foundPy = Path.GetFullPath(p);
+                            break;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(foundPy))
+                    {
+                        string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                        string uvPath = Path.Combine(userProfile, ".local", "bin", "uv.exe");
+                        if (!File.Exists(uvPath))
+                        {
+                            uvPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "uv", "uv.exe");
+                        }
+
+                        if (File.Exists(uvPath))
+                        {
+                            var psi = new ProcessStartInfo
+                            {
+                                FileName = uvPath,
+                                Arguments = $"run --with fastapi,uvicorn,httpx,pillow,pydantic,diffusers,torch python -m uvicorn app:app --host 127.0.0.1 --port 7860",
+                                WorkingDirectory = Path.GetDirectoryName(foundPy),
+                                UseShellExecute = true,
+                                CreateNoWindow = false
+                            };
+                            _serverProcess = Process.Start(psi);
+                        }
+                    }
+                }
+
+                // Trigger rapid health checks after launching
+                Task.Run(async () =>
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        await Task.Delay(1500);
+                        var st = await CheckStatusAsync();
+                        if (st.Status != "offline") break;
+                    }
+                });
             }
             catch { }
         }

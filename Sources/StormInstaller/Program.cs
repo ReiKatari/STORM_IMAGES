@@ -491,6 +491,14 @@ namespace StormUniversal.Installer
                 try { ExtractResource("logo.png", targetLogo); } catch { }
                 ExtractResource("STORM_Certificate.cer", targetCer);
 
+                // Extract AI Server components
+                string serverDir = Path.Combine(targetDir, "StormImagesServer");
+                Directory.CreateDirectory(serverDir);
+                try { ExtractResource("app.py", Path.Combine(serverDir, "app.py")); } catch { }
+                try { ExtractResource("run_server.bat", Path.Combine(serverDir, "run_server.bat")); } catch { }
+                try { ExtractResource("telegram_service.py", Path.Combine(serverDir, "telegram_service.py")); } catch { }
+                try { ExtractResource("Server_README.md", Path.Combine(serverDir, "README.md")); } catch { }
+
                 progressBar.Value = 75;
                 lblStatus.Text = "Снятие меток блокировки и оптимизация безопасности...";
                 await Task.Delay(150);
